@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Navigator() {
   return (
     <View style={styles.container}>
-      {/* 여기 각각 아이콘이 들어가게 바꿔야 함 */}
       <Ionicons name="reader-outline" size={24} color="black" />
       <Ionicons name="search" size={24} color="black" />
       <Ionicons name="person-outline" size={24} color="black" />
