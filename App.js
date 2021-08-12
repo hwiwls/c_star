@@ -1,46 +1,41 @@
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, TextInput } from "react-native";
 import Title from "./Title.js";
 import Navigator from "./Navigator.js";
 import Post from "./Post.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-function HomeScreen({ navigation }) {
+// Post 스크린
+function PostScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
+      <Text>This is a Post Screen</Text>
       <Button
-        title="Go to Details"
+        title="Go to upload"
         onPress={() => {
           /* 1. Navigate to the Details route with params */
-          navigation.navigate("Details", {
-            itemId: 86,
-            otherParam: "anything you want here",
-          });
+          navigation.navigate("Upload");
         }}
       />
     </View>
   );
 }
 
-function DetailsScreen({ route, navigation }) {
+// Post에서 업로드 버튼을 눌러야 올 수 있다
+function UploadScreen({ navigation }) {
   /* 2. Get the param */
-  const { itemId, otherParam } = route.params;
+  const [onChangeText] = React.useState("Useless Placeholder");
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
-      <Text>itemId: {JSON.stringify(itemId)}</Text>
-      <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-      <Button
-        title="Go to Details... again"
-        onPress={() =>
-          navigation.push("Details", {
-            itemId: Math.floor(Math.random() * 100),
-          })
-        }
+      <Text>Upload Screen</Text>
+      <Text>내용:</Text>
+      <TextInput
+        style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+        onChangeText={(text) => onChangeText(text)}
+        value=""
       />
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+      <Button title="Go to Post" onPress={() => navigation.navigate("Post")} />
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
@@ -56,9 +51,9 @@ export default class extends React.Component {
         <Post style={styles.content}></Post>
         <Navigator style={styles.nav}></Navigator> */}
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Navigator initialRouteName="Post">
+            <Stack.Screen name="Post" component={PostScreen} />
+            <Stack.Screen name="Upload" component={UploadScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
