@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import Navigator from "./Navigator.js";
+
+import SearchScreen from "./Search.js";
+import LoginScreen from "./Login.js";
 
 export default function PostScreen({ navigation }) {
   return (
@@ -9,10 +11,9 @@ export default function PostScreen({ navigation }) {
       <Button
         title="새로운 글 쓰기"
         onPress={() => {
-          navigation.navigate("Upload");
+          navigation.navigate("Login");
         }}
       />
-      <Navigator style={styles.nav} />
     </View>
   );
 }
@@ -24,12 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   content: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  nav: {
-    flex: 1,
+    flex: 6,
     alignItems: "center",
     justifyContent: "center",
   },
