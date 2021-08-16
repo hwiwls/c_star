@@ -1,0 +1,54 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cstar</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        border-bottom: 1px solid gray;
+        text-align: center;
+      }
+      footer form {
+        background-color: gray;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+        position: static;
+      }
+      footer input {
+        background-color: gray;
+        border: 0;
+        outline: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>title</h1>
+      </header>
+      <section class="content">
+        <form action="http://localhost/upload.php">
+          <p>사진: <input type="file" name="photo" /></p>
+          <p>글: <input type="text" name="content" /></p>
+          <input type="submit" value="업로드" />
+        </form>
+      </section>
+      <footer>
+        <form action="http://localhost/upload.php">
+          <input type="button" name="writing" value="글" />
+          <input type="button" name="search" value="검색" />
+          <input type="button" name="myPage" value="내 페이지" />
+        </form>
+      </footer>
+    </div>
+  </body>
+</html>
