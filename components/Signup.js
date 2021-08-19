@@ -1,9 +1,15 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
-export default function LoginScreen({ navigation }) {
+export default function SignupScreen({ navigation }) {
   return (
     <View>
+      <Text>이름:</Text>
+      <TextInput
+        style={styles.inputbox}
+        placeholder="이름을 입력하세요"
+        multiline
+      />
       <Text>아이디:</Text>
       <TextInput
         style={styles.inputbox}
@@ -18,10 +24,10 @@ export default function LoginScreen({ navigation }) {
         multiline
       />
 
-      {/* 로그인 버튼 기능 추가해야함 */}
+      {/* 버튼 기능 추가 필요 */}
+      <Button style={styles.button} title="회원가입" />
+      <Text>로그인 하러가기 -&gt;</Text>
       <Button style={styles.button} title="로그인" />
-      <Text>아직 회원가입을 안하셨나요? -&gt;</Text>
-      <Button style={styles.button} title="회원가입하기" />
     </View>
   );
 }
