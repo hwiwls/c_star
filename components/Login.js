@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import auth from "@react-native-firebase/auth";
 
 export default function LoginScreen({ navigation }) {
   return (
@@ -21,7 +22,13 @@ export default function LoginScreen({ navigation }) {
       {/* 로그인 버튼 기능 추가해야함 */}
       <Button style={styles.button} title="로그인" />
       <Text>아직 회원가입을 안하셨나요? -&gt;</Text>
-      <Button style={styles.button} title="회원가입하기" />
+      <Button
+        style={styles.button}
+        title="회원가입하러하기"
+        onPress={() => {
+          navigation.navigate("Signup");
+        }}
+      />
     </View>
   );
 }

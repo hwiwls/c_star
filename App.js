@@ -5,12 +5,19 @@ import DetailScreen from "./components/Detail.js";
 import SearchScreen from "./components/Search.js";
 import LoginScreen from "./components/Login.js";
 import SignupScreen from "./components/Signup.js";
-import * as React from "react";
+import React, { Component } from "react";
 import { Button, Text, View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { render } from "react-dom";
+
+// firebase 연결
+import firebase from "firebase";
+
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 const PostStack = createStackNavigator();
 function PostStackScreen() {
@@ -43,37 +50,57 @@ function MyPageStackScreen() {
 }
 
 const Tab = createBottomTabNavigator();
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ color, size }) => {
-              let iconName;
-              if (route.name === "Post") {
-                iconName = "book-outline";
-              } else if (route.name === "Search") {
-                iconName = "search-outline";
-              } else if (route.name === "MyPage") {
-                iconName = "person-outline";
-              }
+export default class App extends Component {
+  componentDidMount() {
+    const firebaseConfig = {
+      apiKey: "AIzaSyAdzYxjy0F4G9bZ7qiHLvmJQy31c76PAFc",
+      authDomain: "cstar-a5fed.firebaseapp.com",
+      databaseURL:
+        "https://cstar-a5fed-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "cstar-a5fed",
+      storageBucket: "cstar-a5fed.appspot.com",
+      messagingSenderId: "486423499209",
+      appId: "1:486423499209:web:67c80e204a084978abd818",
+      measurementId: "G-SC0J1J3CHT",
+    };
 
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}
-          tabBarOptions={{
-            activeTintColor: "blue",
-            inactiveTintColor: "gray",
-          }}
-        >
-          <Tab.Screen name="Post" component={PostStackScreen} />
-          <Tab.Screen name="Search" component={SearchStackScreen} />
-          <Tab.Screen name="MyPage" component={MyPageStackScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </View>
-  );
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ color, size }) => {
+                let iconName;
+                if (route.name === "Post") {
+                  iconName = "book-outline";
+                } else if (route.name === "Search") {
+                  iconName = "search-outline";
+                } else if (route.name === "MyPage") {
+                  iconName = "person-outline";
+                }
+
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: "blue",
+              inactiveTintColor: "gray",
+            }}
+          >
+            <Tab.Screen name="Post" component={PostStackScreen} />
+            <Tab.Screen name="Search" component={SearchStackScreen} />
+            <Tab.Screen name="MyPage" component={MyPageStackScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
