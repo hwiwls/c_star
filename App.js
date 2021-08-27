@@ -72,10 +72,14 @@ export default class App extends Component {
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    } else {
+      firebase.app(); // if already initialized, use that one
+    }
     // const analytics = getAnalytics(app);
 
-    // // 저장된 데이터 읽기
+    // 저장된 데이터 읽기
     const ref = firebase.database().ref();
     ref.on("value", (snapshot) => {
       // firebase 데이터 state.data로 업데이트
@@ -86,7 +90,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.data.map((value) => {
+        {/* {this.state.data.map((value) => {
           return (
             <View>
               <Image
@@ -95,32 +99,30 @@ export default class App extends Component {
               />
             </View>
           );
-        })}
+        })} */}
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ color, size }) => {
                 let iconName;
-                if (route.name === "Post") {
+                if (route.name === "PostStack") {
                   iconName = "book-outline";
-                } else if (route.name === "Search") {
+                } else if (route.name === "SearchStack") {
                   iconName = "search-outline";
-                } else if (route.name === "MyPage") {
+                } else if (route.name === "MyPageStack") {
                   iconName = "person-outline";
                 }
 
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
-              headerShown: false,
-            })}
-            tabBarOptions={{
               activeTintColor: "blue",
               inactiveTintColor: "gray",
-            }}
+              headerShown: false,
+            })}
           >
-            <Tab.Screen name="Post" component={PostStackScreen} />
-            <Tab.Screen name="Search" component={SearchStackScreen} />
-            <Tab.Screen name="MyPage" component={MyPageStackScreen} />
+            <Tab.Screen name="PostStack" component={PostStackScreen} />
+            <Tab.Screen name="SearchStack" component={SearchStackScreen} />
+            <Tab.Screen name="MyPageStack" component={MyPageStackScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </View>
