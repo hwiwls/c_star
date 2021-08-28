@@ -80,11 +80,11 @@ export default class App extends Component {
     // const analytics = getAnalytics(app);
 
     // 저장된 데이터 읽기
-    const ref = firebase.database().ref();
-    ref.on("value", (snapshot) => {
-      // firebase 데이터 state.data로 업데이트
-      this.setState({ data: snapshot.val() });
-    });
+    // const ref = firebase.database().ref();
+    // ref.on("value", (snapshot) => {
+    //   // firebase 데이터 state.data로 업데이트
+    //   this.setState({ data: snapshot.val() });
+    // });
   }
 
   render() {

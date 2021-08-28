@@ -26,7 +26,9 @@ export default function LoginScreen({ navigation }) {
         style={styles.button}
         title="회원가입하러하기"
         onPress={() => {
-          navigation.navigate("Signup");
+          navigation.navigate("Signup", {
+            navigation: navigation,
+          });
         }}
       />
     </View>

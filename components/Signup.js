@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
 import firebase from "firebase";
 import database from "@react-native-firebase/database";
 
@@ -10,7 +10,7 @@ export default class SignupScreen extends React.Component {
       name: "",
       id: "",
       pwd: "",
-      failmessage: null,
+      checkedid: false,
     };
   }
 
@@ -34,23 +34,99 @@ export default class SignupScreen extends React.Component {
     } else {
       firebase.app(); // if already initialized, use that one
     }
+
+    // 저장된 데이터 읽기
+    const ref = firebase.database().ref();
+    ref.on("value", (snapshot) => {
+      // firebase 데이터 state.data로 업데이트
+      this.setState({ data: snapshot.val() });
+    });
   }
 
-  // 데이터를 어떻게 보내지
   checkSignup = () => {
-    console.log("checkSignup");
-    console.log(this.state.name);
-    console.log(this.state.id);
-    console.log(this.state.pwd);
+    const { name, id, pwd, checkedid } = this.state;
 
     // 모두 제대로 입력되었는지 확인
 
-    // member data 추가
-    this.addMemberData(this.state.id, this.state.name, this.state.pwd);
+    // 아이디 중복체크를 제대로 하지 않았을 경우
+    if (checkedid === false) {
+      Alert.alert(
+        "회원가입 실패",
+        "아이디중복체크를 한 후, 회원가입을 시도해주세요",
+        [
+          {
+            text: "확인",
+            onPress: () => console.log("[회원가입실패] 아이디중복체크 미완료"),
+          },
+        ]
+      );
+    }
+    // 입력되지 않은 정보가 있는 경우
+    else if ((name == "") | (id == "") | (pwd == "")) {
+      Alert.alert(
+        "회원가입 실패",
+        "입력되지 않은 정보가 있습니다. 확인해주세요",
+        [
+          {
+            text: "확인",
+            onPress: () => console.log("[회원가입실패] 입력되지 않은 정보"),
+          },
+        ]
+      );
+    } else {
+      // 모든 조건을 통과했을 경우
+      // member data 추가
+      this.addMemberData(name, id, pwd);
+    }
+  };
+
+  checkIdexist = () => {
+    const { id } = this.state;
+
+    // 아이디를 입력하지 않고 아이디중복체크 버튼을 누른 경우
+    if (id === "") {
+      Alert.alert("아이디중복체크", "아이디를 입력해주세요", [
+        {
+          text: "확인",
+          onPress: () =>
+            console.log("[아이디중복체크] 아이디가 입력되지 않았습니다"),
+        },
+      ]);
+    } else {
+      // 저장된 member 읽기
+      const ref = firebase.database().ref("member/" + id);
+      ref.on("value", (snapshot) => {
+        // 해당 아이디가 존재하는 경우
+        if (snapshot.exists()) {
+          Alert.alert(
+            "아이디중복체크",
+            "아이디가 중복입니다. 아이디를 변경해주세요",
+            [
+              {
+                text: "확인",
+                onPress: () =>
+                  console.log("[아이디중복체크] 아이디가 이미 존재합니다"),
+              },
+            ]
+          );
+        } else {
+          // 아이디중복체크 성공했을때
+          this.setState((state) => {
+            return { checkedid: true };
+          });
+          Alert.alert("아이디중복체크", id + "는 사용가능한 아이디입니다", [
+            {
+              text: "확인",
+              onPress: () => console.log("[아이디중복체크] 사용가능한 아이디"),
+            },
+          ]);
+        }
+      });
+    }
   };
 
   // member data에 새로운 member을 추가하는 함수
-  addMemberData = (userid, username, userpwd) => {
+  addMemberData = (username, userid, userpwd) => {
     firebase
       .database()
       .ref("member/" + userid)
@@ -63,6 +139,8 @@ export default class SignupScreen extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
+
     return (
       <View>
         <Text>이름:</Text>
@@ -79,7 +157,11 @@ export default class SignupScreen extends React.Component {
           onChangeText={(id) => this.setState({ id })}
           value={this.state.id}
         />
-        {/* 비밀번호는 입력할때 0000으로 보이게 변경해야함 */}
+        <Button
+          style={styles.button}
+          title="아이디중복체크"
+          onPress={this.checkIdexist}
+        />
         <Text>비밀번호:</Text>
         <TextInput
           style={styles.inputbox}
